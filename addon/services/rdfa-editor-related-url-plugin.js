@@ -31,20 +31,23 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @public
    */
   execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    console.log('Reset3')
+    console.log('Reset3') // TODO remove log
+
+    // TODO : add a little comment at each step summarizing with real sentences what it does
+
     if (contexts.length === 0) return [];
 
     const hints = [];
     contexts.forEach((context) => {
-      let relevantContext = this.detectRelevantContext(context)
-      console.log(relevantContext)
+      let relevantContext = this.detectRelevantContext(context);
+      console.log(relevantContext) // TODO remove log
       if (relevantContext) {
         hintsRegistry.removeHintsInRegion(context.region, hrId, this.get('who'));
         hints.pushObjects(this.generateHintsForContext(context));
       }
     });
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint));
-    if(cards.length > 0){
+    if (cards.length > 0) {
       hintsRegistry.addHints(hrId, this.get('who'), cards);
     }
   }),
@@ -61,13 +64,11 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @private
    */
   detectRelevantContext(context){
-    const match = context.text.match(/dbp:(\S+)/)
-    console.log(match)
-    if(!match) return false
-    return true
+    const match = context.text.match(/dbp:(\S+)/);
+    console.log(match) // TODO remove log
+    if(!match) return false;
+    return true;
   },
-
-
 
   /**
    * Maps location of substring back within reference location
@@ -81,7 +82,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    *
    * @private
    */
-  normalizeLocation(location, reference){
+  normalizeLocation(location, reference) {
     return [location[0] + reference[0], location[1] + reference[0]];
   },
 
@@ -124,11 +125,11 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    *
    * @private
    */
-  generateHintsForContext(context){
+  generateHintsForContext(context) {
     const hints = [];
-    const match = context.text.match(/dbp:(\S+)/)
+    const match = context.text.match(/dbp:(\S+)/);
     const index = context.text.toLowerCase().indexOf(match[0]);
-    const text = match[1]
+    const text = match[1];
     const location = this.normalizeLocation([index, index+ match[0].length], context.region);
     hints.push({text, location});
     return hints;

@@ -44,9 +44,11 @@ export default Component.extend({
    * @private
   */
   hintsRegistry: reads('info.hintsRegistry'),
+
+  // TODO add documentation
   getDbpediaOptions() {
-    const termCapitalized = this.capitalizeFirstLetter(this.info.plainValue)
-    const url = new URL("http://dbpedia.org/sparql")
+    const termCapitalized = this.capitalizeFirstLetter(this.info.plainValue);
+    const url = new URL("http://dbpedia.org/sparql");
     let query = `
       SELECT ?label ?matchScore WHERE {
         ?s rdfs:label ?label.
@@ -56,25 +58,34 @@ export default Component.extend({
         FILTER (lang(?label) = 'en')
         BIND(IF (?label = '${termCapitalized}'@en, ?sc + 100, ?sc) AS ?matchScore)
       }ORDER BY DESC (?matchScore)
-    `
+    `;
     const params = {
       format: "application/sparql-results+json",
-      query,
+      query
     }
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+    // TODO : you can simplify a bit this block like that if you find it clearer. The `.then()` syntax is oftentimes confusing.
+    // const response = await (await fetch(url)).json();
+    // this.set('options', response.results.bindings.map((option) => option.label.value));
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        this.set('options', json.results.bindings.map((option) => option.label.value))
+        this.set('options', json.results.bindings.map((option) => option.label.value));
       })
   },
+
+  // TODO add documentation
   capitalizeFirstLetter(word) {
     word.charAt(0).toUpperCase() + word.substring(1);
   },
+
+  // TODO add documentation (what does that hook, they'll probably not know ember)
   willRender() {
-    this.getDbpediaOptions()
+    this.getDbpediaOptions();
   },
 
+  // TODO add documentation
   generateLink() {
     return `
       <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
@@ -82,12 +93,15 @@ export default Component.extend({
       </a>
     `
   },
+
   actions: {
-    insert(){
+
+    // TODO add documentation
+    insert() {
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/related-url-card');
-      const linkHTML = this.generateLink()
-      const selection = this.get('editor').selectHighlight(this.get('location'))
-      this.get('editor').update(selection, { set: {innerHTML: linkHTML}})
+      const linkHTML = this.generateLink();
+      const selection = this.get('editor').selectHighlight(this.get('location'));
+      this.get('editor').update(selection, { set: {innerHTML: linkHTML} });
     }
   }
 });
