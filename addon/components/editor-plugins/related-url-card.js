@@ -65,14 +65,17 @@ export default Component.extend({
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
+        console.log(json)
         this.set('options', json.results.bindings.map((option) => option.label.value))
       })
   },
   capitalizeFirstLetter(word) {
-    word.charAt(0).toUpperCase() + word.substring(1);
+    return (word.charAt(0).toUpperCase() + word.substring(1));
   },
   willRender() {
-    this.getDbpediaOptions()
+    if(!this.options.length) {
+      this.getDbpediaOptions()
+    }
   },
 
   generateLink() {
