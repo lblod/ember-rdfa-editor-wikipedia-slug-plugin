@@ -31,22 +31,28 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @public
    */
   execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    console.log('Reset3')
+    //We check if we have new contexts 
     if (contexts.length === 0) return [];
 
     const hints = [];
+
     contexts.forEach((context) => {
-      let relevantContext = this.detectRelevantContext(context)
-      console.log(relevantContext)
+      //For each of the context we detect if it's relevant to our plugin
+      let relevantContext = this.detectRelevantContext(context);
       if (relevantContext) {
+        // If the context is relevant we remove other hints associated to that context
         hintsRegistry.removeHintsInRegion(context.region, hrId, this.get('who'));
+        // And generate a new hint
         hints.pushObjects(this.generateHintsForContext(context));
       }
     });
+    // For each of the hints we generate a new card
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint));
-    if(cards.length > 0){
+    if(cards.length > 0) {
+      // We add the new cards to the hint registry
       hintsRegistry.addHints(hrId, this.get('who'), cards);
     }
+    yield 1;
   }),
 
   /**
@@ -61,13 +67,10 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @private
    */
   detectRelevantContext(context){
-    const match = context.text.match(/dbp:(\S+)/)
-    console.log(match)
-    if(!match) return false
-    return true
+    const match = context.text.match(/dbp:(\S+)/);
+    if(!match) return false;
+    return true;
   },
-
-
 
   /**
    * Maps location of substring back within reference location
@@ -81,7 +84,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    *
    * @private
    */
-  normalizeLocation(location, reference){
+  normalizeLocation(location, reference) {
     return [location[0] + reference[0], location[1] + reference[0]];
   },
 
@@ -124,11 +127,11 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    *
    * @private
    */
-  generateHintsForContext(context){
+  generateHintsForContext(context) {
     const hints = [];
-    const match = context.text.match(/dbp:(\S+)/)
+    const match = context.text.match(/dbp:(\S+)/);
     const index = context.text.toLowerCase().indexOf(match[0]);
-    const text = match[1]
+    const text = match[1];
     const location = this.normalizeLocation([index, index+ match[0].length], context.region);
     hints.push({text, location});
     return hints;
