@@ -69,10 +69,7 @@ export default Component.extend({
       query
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-
-    // TODO : you can simplify a bit this block like that if you find it clearer. The `.then()` syntax is oftentimes confusing.
-    // const response = await (await fetch(url)).json();
-    // this.set('options', response.results.bindings.map((option) => option.label.value));
+    
     const response = await fetch(url)
     const json = await response.json()
     this.set('options', json.results.bindings.map((option) => option.label.value));
