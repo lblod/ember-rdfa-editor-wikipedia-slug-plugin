@@ -1,5 +1,5 @@
 {
-  "name": "@lblod/ember-rdfa-editor-related-url-plugin",
+  "name": "@lblod/ember-rdfa-editor-wikipedia-slug-plugin",
   "version": "0.0.2",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
