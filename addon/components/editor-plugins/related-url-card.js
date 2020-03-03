@@ -77,12 +77,14 @@ export default Component.extend({
 
   // TODO add documentation
   capitalizeFirstLetter(word) {
-    word.charAt(0).toUpperCase() + word.substring(1);
+    return (word.charAt(0).toUpperCase() + word.substring(1));
   },
 
   // TODO add documentation (what does that hook, they'll probably not know ember)
   willRender() {
-    this.getDbpediaOptions();
+    if(!this.options.length) {
+      this.getDbpediaOptions()
+    }
   },
 
   // TODO add documentation
