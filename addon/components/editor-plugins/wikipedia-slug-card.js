@@ -1,11 +1,11 @@
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
-import layout from '../../templates/components/editor-plugins/related-url-card';
+import layout from '../../templates/components/editor-plugins/wikipedia-slug-card';
 
 /**
 * Card displaying a hint of the Date plugin
 *
-* @module editor-related-url-plugin
+* @module editor-wikipedia-slug-plugin
 * @class RelatedUrlCard
 * @extends Ember.Component
 */
@@ -118,7 +118,7 @@ export default Component.extend({
     * @public
     */
     insert() {
-      this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/related-url-card');
+      this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/wikipedia-slug-card');
       const linkHTML = this.generateLink();
       const selection = this.get('editor').selectHighlight(this.get('location'));
       this.get('editor').update(selection, { set: {innerHTML: linkHTML} });

@@ -3,7 +3,7 @@
 ## Installation
 
 * `git clone <repository-url>`
-* `cd ember-rdfa-editor-related-url-plugin`
+* `cd ember-rdfa-editor-wikipedia-slug-plugin`
 * `npm install`
 
 ## Linting

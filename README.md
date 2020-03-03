@@ -1,4 +1,4 @@
-ember-rdfa-editor-related-url-plugin
+ember-rdfa-editor-wikipedia-slug-plugin
 ==============================================================================
 
 [Short description of the addon.]
@@ -16,7 +16,7 @@ Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-rdfa-editor-related-url-plugin
+ember install ember-rdfa-editor-wikipedia-slug-plugin
 ```
 
 

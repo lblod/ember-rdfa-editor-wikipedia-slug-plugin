@@ -6,7 +6,7 @@ import { task } from 'ember-concurrency';
 /**
  * Service responsible for correct annotation of dates
  *
- * @module editor-related-url-plugin
+ * @module editor-wikipedia-slug-plugin
  * @class RdfaEditorRelatedUrlPlugin
  * @constructor
  * @extends EmberService
@@ -139,6 +139,6 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
 });
 
 RdfaEditorRelatedUrlPlugin.reopen({
-  who: 'editor-plugins/related-url-card'
+  who: 'editor-plugins/wikipedia-slug-card'
 });
 export default RdfaEditorRelatedUrlPlugin;
