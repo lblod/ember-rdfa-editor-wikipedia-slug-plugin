@@ -45,8 +45,13 @@ export default Component.extend({
   */
   hintsRegistry: reads('info.hintsRegistry'),
 
-  // TODO add documentation
-  getDbpediaOptions() {
+  /**
+   * Get all the dbpedia options related to the term of the card,
+   * and store them in this.options
+   * @method getDbpediaOptions
+   * @public
+   */
+  async getDbpediaOptions() {
     const termCapitalized = this.capitalizeFirstLetter(this.info.plainValue);
     const url = new URL("http://dbpedia.org/sparql");
     let query = `
@@ -68,26 +73,39 @@ export default Component.extend({
     // TODO : you can simplify a bit this block like that if you find it clearer. The `.then()` syntax is oftentimes confusing.
     // const response = await (await fetch(url)).json();
     // this.set('options', response.results.bindings.map((option) => option.label.value));
-    fetch(url)
-      .then((response) => response.json())
-      .then((json) => {
-        this.set('options', json.results.bindings.map((option) => option.label.value));
-      })
+    const response = await fetch(url)
+    const json = await response.json()
+    this.set('options', json.results.bindings.map((option) => option.label.value));
   },
 
-  // TODO add documentation
+  /**
+   * Capitalize the first letter of a string
+   * @method capitalizeFirstLetter
+   * @return String
+   * @public
+   */
   capitalizeFirstLetter(word) {
     return (word.charAt(0).toUpperCase() + word.substring(1));
   },
 
-  // TODO add documentation (what does that hook, they'll probably not know ember)
+  /**
+   * Runs just before the card appears on the screen, it fetchs the dbpedia
+   * in order to show options
+   * @method willRender
+   * @public
+   */
   willRender() {
     if(!this.options.length) {
       this.getDbpediaOptions()
     }
   },
 
-  // TODO add documentation
+  /**
+   * Generate the html Element containing the link to the wikipedia article
+   * @method generateLink
+   * @return String
+   * @public
+   */
   generateLink() {
     return `
       <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
@@ -97,8 +115,11 @@ export default Component.extend({
   },
 
   actions: {
-
-    // TODO add documentation
+    /**
+    * Replaces the highlighted word by the html link 
+    * @method insert
+    * @public
+    */
     insert() {
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/related-url-card');
       const linkHTML = this.generateLink();

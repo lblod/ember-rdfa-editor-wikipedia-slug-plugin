@@ -31,25 +31,28 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @public
    */
   execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    console.log('Reset3') // TODO remove log
-
-    // TODO : add a little comment at each step summarizing with real sentences what it does
-
+    //We check if we have new contexts 
     if (contexts.length === 0) return [];
 
     const hints = [];
+
     contexts.forEach((context) => {
+      //For each of the context we detect if it's relevant to our plugin
       let relevantContext = this.detectRelevantContext(context);
-      console.log(relevantContext) // TODO remove log
       if (relevantContext) {
+        // If the context is relevant we remove other hints associated to that context
         hintsRegistry.removeHintsInRegion(context.region, hrId, this.get('who'));
+        // And generate a new hint
         hints.pushObjects(this.generateHintsForContext(context));
       }
     });
+    // For each of the hints we generate a new card
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint));
-    if (cards.length > 0) {
+    if(cards.length > 0) {
+      // We add the new cards to the hint registry
       hintsRegistry.addHints(hrId, this.get('who'), cards);
     }
+    yield 1;
   }),
 
   /**
@@ -65,7 +68,6 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    */
   detectRelevantContext(context){
     const match = context.text.match(/dbp:(\S+)/);
-    console.log(match) // TODO remove log
     if(!match) return false;
     return true;
   },
