@@ -121,8 +121,9 @@ export default Component.extend({
     insert() {
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/wikipedia-slug-card');
       const linkHTML = this.generateLink();
-      //TODO: select and replace the word highlighted by the linkHTML, you should use this.get('editor').selectHighlight
-      // and this.get('editor').update
+      //TODO: select and replace the word highlighted by the linkHTML, you should use 
+      // this.get('editor').selectHighlight (https://dev.say-editor.com/code/classes/Select.html)
+      // and this.get('editor').update (https://dev.say-editor.com/code/classes/Update.html#method_update)
     }
   }
 });
