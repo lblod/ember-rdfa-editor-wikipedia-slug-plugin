@@ -68,6 +68,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    */
   detectRelevantContext(context){
     // TODO: Given the context return a boolean indicating if it's relevant for our plugin
+    const text = context.text
     return true;
   },
 
