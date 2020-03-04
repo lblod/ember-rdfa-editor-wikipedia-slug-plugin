@@ -5,8 +5,7 @@
 </div>
 <div class="modal-dialog__footer">
   {{#wu-button-group}}
-    {{wu-button label="Accept" size="small" isNarrow=true command="ctrl + j" commandLocation="below" onClick=(action "insert")}}
-    {{wu-button label="Reject" size="tiny" isLink=true isDark=true isNarrow=true command="esc" commandLocation="below" onClick=null}}
+    {{wu-button label="Yes" size="small" isNarrow=true commandLocation="below" onClick=(action "insert")}}
   {{/wu-button-group}}
 
   {{yield}}
