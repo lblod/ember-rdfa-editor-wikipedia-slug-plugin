@@ -67,8 +67,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @private
    */
   detectRelevantContext(context){
-    const match = context.text.match(/dbp:(\S+)/);
-    if(!match) return false;
+    // TODO: Given the context return a boolean indicating if it's relevant for our plugin
     return true;
   },
 
@@ -129,10 +128,11 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    */
   generateHintsForContext(context) {
     const hints = [];
-    const match = context.text.match(/dbp:(\S+)/);
-    const index = context.text.toLowerCase().indexOf(match[0]);
-    const text = match[1];
-    const location = this.normalizeLocation([index, index+ match[0].length], context.region);
+    // TODO: set the text to the one we want to pass down to the card
+    const text = ''
+    // TODO: replace relative location with the location to highlight for example 0,1 will highlight the first character of the line
+    const relativeLocation = [0,1]
+    const location = this.normalizeLocation(relativeLocation, context.region);
     hints.push({text, location});
     return hints;
   }

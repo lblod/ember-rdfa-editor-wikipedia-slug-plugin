@@ -104,9 +104,10 @@ export default Component.extend({
    * @public
    */
   generateLink() {
+    //TODO: generate a link to our this.options[0], you should use the encodeURI method of js
     return `
-      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
-        ${this.options[0]}
+      <a href='https://en.wikipedia.org/wiki/' property='rdf:seeAlso'>
+        
       </a>
     `
   },
@@ -120,8 +121,8 @@ export default Component.extend({
     insert() {
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/wikipedia-slug-card');
       const linkHTML = this.generateLink();
-      const selection = this.get('editor').selectHighlight(this.get('location'));
-      this.get('editor').update(selection, { set: {innerHTML: linkHTML} });
+      //TODO: select and replace the word highlighted by the linkHTML, you should use this.get('editor').selectHighlight
+      // and this.get('editor').update
     }
   }
 });
