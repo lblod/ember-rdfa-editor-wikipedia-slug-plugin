@@ -107,7 +107,7 @@ export default Component.extend({
     return `
       <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
         ${this.options[0]}
-      </a>
+      </a>&nbsp;
     `
   },
 
@@ -121,7 +121,8 @@ export default Component.extend({
       this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/wikipedia-slug-card');
       const linkHTML = this.generateLink();
       const selection = this.get('editor').selectHighlight(this.get('location'));
-      this.get('editor').update(selection, { set: {innerHTML: linkHTML} });
+
+      this.get('editor').update(selection, { set: { innerHTML: linkHTML } });
     }
   }
 });
