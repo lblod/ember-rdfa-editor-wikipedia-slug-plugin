@@ -38,7 +38,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
       hintsRegistry.removeHintsInRegion( context.region, hrId, this.who );
 
       // add hints for context
-      const test = /dbp:([A-z])/g;
+      const test = /dbp:([A-z]+)/g;
       let match;
 
       while( match = test.exec( context.text ) ) {
