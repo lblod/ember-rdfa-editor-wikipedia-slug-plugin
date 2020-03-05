@@ -31,46 +31,40 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @public
    */
   execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    //We check if we have new contexts 
-    if (contexts.length === 0) return [];
+    const cards = [];
 
-    const hints = [];
+    for( const context of contexts ){
+      // remove earlier hints
+      hintsRegistry.removeHintsInRegion( context.region, hrId, this.who );
 
-    contexts.forEach((context) => {
-      //For each of the context we detect if it's relevant to our plugin
-      let relevantContext = this.detectRelevantContext(context);
-      if (relevantContext) {
-        // If the context is relevant we remove other hints associated to that context
-        hintsRegistry.removeHintsInRegion(context.region, hrId, this.get('who'));
-        // And generate a new hint
-        hints.pushObjects(this.generateHintsForContext(context));
+      // add hints for context
+      const test = /dbp:([A-z])/g;
+      let match;
+
+      while( match = test.exec( context.text ) ) {
+        const matchText = match[0];
+        const location = this.normalizeLocation(
+          [ match.index, match.index + match[0].length ],
+          context.region );
+
+        cards.push( {
+          info: {
+            label: this.get('who'),
+            plainValue: matchText,
+            location,
+            hrId, hintsRegistry, editor
+          },
+          location: location,
+          card: this.get('who')
+        } );
       }
-    });
-    // For each of the hints we generate a new card
-    const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint));
+    }
     if(cards.length > 0) {
       // We add the new cards to the hint registry
       hintsRegistry.addHints(hrId, this.get('who'), cards);
     }
-    yield 1;
+    yield 1
   }),
-
-  /**
-   * Given context object, tries to detect a context the plugin can work on
-   *
-   * @method detectRelevantContext
-   *
-   * @param {Object} context Text snippet at a specific location with an RDFa context
-   *
-   * @return {String} URI of context if found, else empty string.
-   *
-   * @private
-   */
-  detectRelevantContext(context){
-    const match = context.text.match(/dbp:(\S+)/);
-    if(!match) return false;
-    return true;
-  },
 
   /**
    * Maps location of substring back within reference location
@@ -88,54 +82,6 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
     return [location[0] + reference[0], location[1] + reference[0]];
   },
 
-  /**
-   * Generates a card given a hint
-   *
-   * @method generateCard
-   *
-   * @param {string} hrId Unique identifier of the event in the hintsRegistry
-   * @param {Object} hintsRegistry Registry of hints in the editor
-   * @param {Object} editor The RDFa editor instance
-   * @param {Object} hint containing the hinted string and the location of this string
-   *
-   * @return {Object} The card to hint for a given template
-   *
-   * @private
-   */
-  generateCard(hrId, hintsRegistry, editor, hint){
-    return EmberObject.create({
-      info: {
-        label: this.get('who'),
-        plainValue: hint.text,
-        htmlString: '<b>hello world</b>',
-        location: hint.location,
-        hrId, hintsRegistry, editor
-      },
-      location: hint.location,
-      card: this.get('who')
-    });
-  },
-
-  /**
-   * Generates a hint, given a context
-   *
-   * @method generateHintsForContext
-   *
-   * @param {Object} context Text snippet at a specific location with an RDFa context
-   *
-   * @return {Object} [{dateString, location}]
-   *
-   * @private
-   */
-  generateHintsForContext(context) {
-    const hints = [];
-    const match = context.text.match(/dbp:(\S+)/);
-    const index = context.text.toLowerCase().indexOf(match[0]);
-    const text = match[1];
-    const location = this.normalizeLocation([index, index+ match[0].length], context.region);
-    hints.push({text, location});
-    return hints;
-  }
 });
 
 RdfaEditorRelatedUrlPlugin.reopen({
