@@ -1,6 +1,7 @@
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/wikipedia-slug-card';
+import { task } from 'ember-concurrency';
 
 /**
 * Card displaying a hint of the Date plugin
@@ -51,7 +52,7 @@ export default Component.extend({
    * @method getDbpediaOptions
    * @public
    */
-  async getDbpediaOptions() {
+  getDbpediaOptions: task(function *() {
     const termCapitalized = this.capitalizeFirstLetter(this.info.plainValue);
     const url = new URL("http://dbpedia.org/sparql");
     let query = `
@@ -69,11 +70,11 @@ export default Component.extend({
       query
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    
-    const response = await fetch(url)
-    const json = await response.json()
+
+    const response = yield fetch(url);
+    const json = yield response.json();
     this.set('options', json.results.bindings.map((option) => option.label.value));
-  },
+  }),
 
   /**
    * Capitalize the first letter of a string
@@ -93,7 +94,7 @@ export default Component.extend({
    */
   willRender() {
     if(!this.options.length) {
-      this.getDbpediaOptions()
+      this.getDbpediaOptions.perform();
     }
   },
 
