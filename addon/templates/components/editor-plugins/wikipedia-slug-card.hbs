@@ -1,11 +1,12 @@
-<p class="u-spacer--tiny">{{info.label}} <br>
-  {{!-- TODO: ask the user if he wants to replace the word by a link to wikipedia,--}}
-  {{!-- You should use the ember get helper that has the following structure {{get array index}} --}}
-</p>
-
-{{#wu-button-group}}
-  {{wu-button label="Accept" size="small" isNarrow=true command="ctrl + j" commandLocation="below" onClick=(action "insert")}}
-  {{wu-button label="Reject" size="tiny" isLink=true isDark=true isNarrow=true command="esc" commandLocation="below" onClick=null}}
-{{/wu-button-group}}
-
-{{yield}}
+<div class="modal-dialog__content">
+  <p class="u-spacer--tiny">{{info.label}} <br>
+    {{!-- TODO: ask the user if he wants to replace the word by a link to wikipedia,--}}
+    {{!-- You should use the ember get helper that has the following structure {{get array index}} --}}
+  </p>
+</div>
+<div class="modal-dialog__footer">
+  {{#wu-button-group}}
+    {{wu-button label="Yes" size="small" isNarrow=true commandLocation="below" onClick=(action "insert")}}
+  {{/wu-button-group}}
+  {{yield}}
+</div>
