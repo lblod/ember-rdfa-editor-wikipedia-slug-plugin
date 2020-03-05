@@ -39,12 +39,13 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
 
       // add hints for context
       const test = /dbp:([A-z]+)/g;
-      let match;
-
-      while( match = test.exec( context.text ) ) {
-        const matchText = match[0];
+      let match = context.text.match(test)
+      console.log(match)
+      if(match) {
+        const matchText = match[0].split(':')[1]
+        const matchIndex = context.text.indexOf(matchText)
         const location = this.normalizeLocation(
-          [ match.index, match.index + match[0].length ],
+          [ matchIndex, matchIndex + match[0].length ],
           context.region );
 
         cards.push( {
