@@ -1,7 +1,8 @@
-import { getOwner } from '@ember/application';
 import Service from '@ember/service';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject from '@ember/object';
 import { task } from 'ember-concurrency';
+
+const EDITOR_CARD_NAME = 'editor-plugins/wikipedia-slug-card';
 
 /**
  * Service responsible for correct annotation of dates
@@ -12,11 +13,6 @@ import { task } from 'ember-concurrency';
  * @extends EmberService
  */
 const RdfaEditorRelatedUrlPlugin = Service.extend({
-
-  init(){
-    this._super(...arguments);
-    const config = getOwner(this).resolveRegistration('config:environment');
-  },
 
   /**
    * task to handle the incoming events from the editor dispatcher
@@ -31,39 +27,40 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @public
    */
   execute: task(function * (hrId, contexts, hintsRegistry, editor) {
+    console.log("Hello");
+
     const cards = [];
 
     for( const context of contexts ){
       // remove earlier hints
-      hintsRegistry.removeHintsInRegion( context.region, hrId, this.who );
+
+      hintsRegistry.removeHintsInRegion( context.region, hrId, EDITOR_CARD_NAME ); // MARK
 
       // add hints for context
       const test = /dbp:([a-zA-Z]+)/g;
-      let match = context.text.match(test)
+      let match = context.text.match(test);
       if(match) {
-        const matchText = match[0].split(':')[1]
-        const matchIndex = context.text.indexOf(match[0])
+        const matchedString = match[0];
+        const matchedTerm = matchedString.split(':')[1];
+        const matchIndex = context.text.indexOf(matchedString);
         const location = this.normalizeLocation(
-          [ matchIndex, matchIndex + match[0].length ],
-          context.region );
+          [ matchIndex, matchIndex + matchedString.length ],
+          context.region );  // MARK?
 
-        cards.push( {
+        cards.push( EmberObject.create({
           info: {
-            label: this.get('who'),
-            plainValue: matchText,
+            label: "Our wikipedia insertion",
+            plainValue: matchedTerm,
             location,
             hrId, hintsRegistry, editor
           },
           location: location,
-          card: this.get('who')
-        } );
+          card: EDITOR_CARD_NAME
+        }) );
       }
     }
-    if(cards.length > 0) {
-      // We add the new cards to the hint registry
-      hintsRegistry.addHints(hrId, this.get('who'), cards);
-    }
-    yield 1
+
+    hintsRegistry.addHints(hrId, EDITOR_CARD_NAME, cards); // MARK
   }),
 
   /**
@@ -84,7 +81,4 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
 
 });
 
-RdfaEditorRelatedUrlPlugin.reopen({
-  who: 'editor-plugins/wikipedia-slug-card'
-});
 export default RdfaEditorRelatedUrlPlugin;
