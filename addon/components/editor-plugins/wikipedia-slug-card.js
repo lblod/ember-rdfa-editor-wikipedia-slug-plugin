@@ -23,9 +23,13 @@ export default Component.extend({
   insert() {
     this.info.hintsRegistry.removeHintsAtLocation(this.info.location, this.info.hrId, 'editor-plugins/wikipedia-slug-card');
     const linkHTML = this.generateLink();
-    const selection = this.info.editor.selectHighlight(this.info.location);
 
-    this.info.editor.update(selection, { set: { innerHTML: linkHTML } });
+    //TODO:
+    // Select and replace the word highlighted by the linkHTML.
+    // You should use this.editor.selectHighlight and supply this.info.location as the first argument
+    // See: https://dev.say-editor.com/code/classes/Select.html
+    // Next, use this.editor.update to insert the link
+    // See: (https://dev.say-editor.com/code/classes/Update.html#method_update
   },
 
   /**
