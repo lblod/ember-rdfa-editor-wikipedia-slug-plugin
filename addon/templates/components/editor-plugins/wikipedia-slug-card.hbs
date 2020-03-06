@@ -1,12 +1,14 @@
 <div class="modal-dialog__content">
-  <p class="u-spacer--tiny">{{info.label}} <br>
-    <strong>Do you want to insert a link to {{get options 0}} ?</strong>
+  <p class="u-spacer--tiny">
+    {{info.label}}
+    <br>
+    <strong>Do you want to insert a link to {{get options 0}}?</strong>
   </p>
 </div>
 <div class="modal-dialog__footer">
-  {{#wu-button-group}}
-    {{wu-button label="Yes" size="small" isNarrow=true commandLocation="below" onClick=(action "insert")}}
-  {{/wu-button-group}}
+  <WuButtonGroup>
+    <WuButton @label="Yes" @size="small" @isNarrow={{true}} @commandLocation="below" @onClick={{action "insert"}} />
+  </WuButtonGroup>
 
   {{yield}}
 </div>

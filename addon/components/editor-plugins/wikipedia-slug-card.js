@@ -2,6 +2,7 @@ import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/wikipedia-slug-card';
 import { task } from 'ember-concurrency';
+import { action } from '@ember/object';
 
 /**
 * Card displaying a hint of the Date plugin
@@ -112,7 +113,7 @@ export default Component.extend({
     `
   },
 
-  actions: {
+  @action
     /**
     * Replaces the highlighted word by the html link 
     * @method insert
@@ -125,5 +126,4 @@ export default Component.extend({
 
       this.get('editor').update(selection, { set: { innerHTML: linkHTML } });
     }
-  }
 });
