@@ -14,6 +14,34 @@ import { action } from '@ember/object';
 export default Component.extend({
   layout,
 
+  @action
+  /**
+   * Replaces the highlighted word by the html link
+   * @method insert
+   * @public
+   */
+  insert() {
+    this.info.hintsRegistry.removeHintsAtLocation(this.info.location, this.info.hrId, 'editor-plugins/wikipedia-slug-card');
+    const linkHTML = this.generateLink();
+    const selection = this.info.editor.selectHighlight(this.info.location);
+
+    this.info.editor.update(selection, { set: { innerHTML: linkHTML } });
+  },
+
+  /**
+   * Generate the html Element containing the link to the wikipedia article
+   * @method generateLink
+   * @return String
+   * @public
+   */
+  generateLink() {
+    return `
+      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
+        ${this.options[0]}
+      </a>&nbsp;
+    `;
+  },
+
   /**
    * Region on which the card applies
    * @property location
@@ -97,33 +125,5 @@ export default Component.extend({
     if(!this.options.length) {
       this.getDbpediaOptions.perform();
     }
-  },
-
-  /**
-   * Generate the html Element containing the link to the wikipedia article
-   * @method generateLink
-   * @return String
-   * @public
-   */
-  generateLink() {
-    return `
-      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
-        ${this.options[0]}
-      </a>&nbsp;
-    `
-  },
-
-  @action
-    /**
-    * Replaces the highlighted word by the html link 
-    * @method insert
-    * @public
-    */
-    insert() {
-      this.get('hintsRegistry').removeHintsAtLocation(this.get('location'), this.get('hrId'), 'editor-plugins/wikipedia-slug-card');
-      const linkHTML = this.generateLink();
-      const selection = this.get('editor').selectHighlight(this.get('location'));
-
-      this.get('editor').update(selection, { set: { innerHTML: linkHTML } });
-    }
+  }
 });
