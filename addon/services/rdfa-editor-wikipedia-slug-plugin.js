@@ -32,9 +32,8 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
     // TODO log the contexts in the console so you can inspect the object in the browser
 
     for( const context of contexts ){
-      // Remove the current hints produced by this plugin from the hints registry
+      // TODO Remove the current hints produced by this plugin from the hints registry
       // See https://dev.say-editor.com/code/classes/HintsRegistry.html#method_removeHintsInRegion
-      hintsRegistry.removeHintsInRegion( context.region, hrId, EDITOR_CARD_NAME );
 
       // add hints for context
       const test = /dbp:([a-zA-Z]+)/g;
@@ -60,9 +59,8 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
       }
     }
 
-    // Add the new hints to the hints registry
+    // TODO Add the new hints to the hints registry
     // See https://dev.say-editor.com/code/classes/HintsRegistry.html#method_addHints
-    hintsRegistry.addHints(hrId, EDITOR_CARD_NAME, cards);
   }),
 
   /**
