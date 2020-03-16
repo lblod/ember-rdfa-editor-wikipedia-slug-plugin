@@ -27,7 +27,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    * @public
    */
   execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    console.log("Hello");
+    console.log("Updated2");
 
     const cards = [];
 
@@ -50,7 +50,7 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
         cards.push( EmberObject.create({
           info: {
             label: "Our wikipedia insertion",
-            plainValue: matchedTerm,
+            term: matchedTerm,
             location,
             hrId, hintsRegistry, editor
           },
