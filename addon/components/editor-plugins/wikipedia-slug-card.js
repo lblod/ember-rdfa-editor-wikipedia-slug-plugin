@@ -12,8 +12,7 @@ import dbpediaQuery from '../../util/dbpedia-query';
 */
 export default class WikipediaSlugCardComponent extends Component {
 
-  @tracked
-  options = [];
+  @tracked options = [];
 
   constructor() {
     super(...arguments);
