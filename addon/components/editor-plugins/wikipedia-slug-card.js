@@ -25,7 +25,6 @@ export default class WikipediaSlugCardComponent extends Component {
    * @public
    */
   async getDbpediaOptions() {
-    console.log(this.args)
     const options = await dbpediaQuery(this.args.info.term)
     this.options = options
   }
