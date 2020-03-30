@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 
 import { task } from 'ember-concurrency-decorators';
-import normalizeLocation from '../../utils/normalize-location';
+import normalizeLocation from '../utils/normalize-location';
 
 const COMPONENT_ID = 'editor-plugins/wikipedia-slug-card';
 
@@ -72,7 +72,7 @@ export default class RdfaEditorDbpediaPluginService extends Service {
     const matchedString = match[0];
     const matchedTerm = matchedString.split(':')[1];
     const matchIndex = rdfaBlock.text.indexOf(matchedString);
-    const location = this.normalizeLocation(
+    const location = normalizeLocation(
       [ matchIndex, matchIndex + matchedString.length ],
       rdfaBlock.region );
 
