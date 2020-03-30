@@ -1,0 +1,22 @@
+<div class="modal-dialog__content">
+  <p class="u-spacer--tiny">
+    Wikipedia link hint
+    <br>
+    {{#if this.loading}}
+      <br><strong>...looking up articles...</strong>
+    {{else}}
+      {{#if this.solution}}
+        <strong>Do you want to insert a link to {{this.solution}}?</strong>
+      {{else}}
+        <strong>No article found for {{@info.term}}</strong>
+      {{/if}}
+    {{/if}}
+  </p>
+</div>
+{{#if this.solution}}
+  <div class="modal-dialog__footer">
+    <WuButtonGroup>
+      <WuButton @label="Yes" @size="small" @isNarrow={{true}} @commandLocation="below" @onClick={{this.insert}} />
+    </WuButtonGroup>
+  </div>
+{{/if}}

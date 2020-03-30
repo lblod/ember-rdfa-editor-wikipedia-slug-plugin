@@ -1,8 +1,8 @@
 import Service from '@ember/service';
-import EmberObject from '@ember/object';
-import { task } from 'ember-concurrency';
 
-const EDITOR_CARD_NAME = 'editor-plugins/wikipedia-slug-card';
+import normalizeLocation from '../utils/normalize-location';
+
+const COMPONENT_ID = 'editor-plugins/wikipedia-slug-card';
 
 /**
  * Service responsible for correct annotation of dates
@@ -12,10 +12,9 @@ const EDITOR_CARD_NAME = 'editor-plugins/wikipedia-slug-card';
  * @constructor
  * @extends EmberService
  */
-const RdfaEditorRelatedUrlPlugin = Service.extend({
-
+export default class RdfaEditorDbpediaPluginService extends Service {
   /**
-   * task to handle the incoming events from the editor dispatcher
+   * Handles the incoming events from the editor dispatcher.
    *
    * @method execute
    *
@@ -26,59 +25,33 @@ const RdfaEditorRelatedUrlPlugin = Service.extend({
    *
    * @public
    */
-  execute: task(function * (hrId, contexts, hintsRegistry, editor) {
-    console.log("Hello");
+  execute(hrId, rdfaBlocks, hintsRegistry, editor){
+    const hints = [];
+    for( const rdfaBlock of rdfaBlocks ) {
+      // using the removal here requires us to add hints in a separate loop.
+      hintsRegistry.removeHintsInRegion(rdfaBlock.region, hrId, COMPONENT_ID);
 
-    const cards = [];
 
-    for( const context of contexts ){
-      // remove earlier hints
-
-      hintsRegistry.removeHintsInRegion( context.region, hrId, EDITOR_CARD_NAME ); // MARK
-
-      // add hints for context
-      const test = /dbp:([a-zA-Z]+)/g;
-      let match = context.text.match(test);
-      if(match) {
+      const match = rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/);
+      if (match) {
         const matchedString = match[0];
-        const matchedTerm = matchedString.split(':')[1];
-        const matchIndex = context.text.indexOf(matchedString);
-        const location = this.normalizeLocation(
+        const term = match[1];
+        const matchIndex = match.index;
+        const location = normalizeLocation(
           [ matchIndex, matchIndex + matchedString.length ],
-          context.region );  // MARK?
+          rdfaBlock.region );
 
-        cards.push( EmberObject.create({
+        hints.pushObject( {
           info: {
-            label: "Our wikipedia insertion",
-            plainValue: matchedTerm,
-            location,
-            hrId, hintsRegistry, editor
+            term, location, hrId, hintsRegistry, editor
           },
           location: location,
-          card: EDITOR_CARD_NAME
-        }) );
+          card: COMPONENT_ID
+        } );
       }
     }
 
-    hintsRegistry.addHints(hrId, EDITOR_CARD_NAME, cards); // MARK
-  }),
-
-  /**
-   * Maps location of substring back within reference location
-   *
-   * @method normalizeLocation
-   *
-   * @param {[int,int]} [start, end] Location withing string
-   * @param {[int,int]} [start, end] reference location
-   *
-   * @return {[int,int]} [start, end] absolute location
-   *
-   * @private
-   */
-  normalizeLocation(location, reference) {
-    return [location[0] + reference[0], location[1] + reference[0]];
-  },
-
-});
-
-export default RdfaEditorRelatedUrlPlugin;
+    // adding hints must occur in a separate loop from removing hints
+    hintsRegistry.addHints(hrId, COMPONENT_ID, hints);
+  }
+};
