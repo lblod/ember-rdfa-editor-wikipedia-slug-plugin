@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 
 import { task } from 'ember-concurrency-decorators';
+import normalizeLocation from '../../utils/normalize-location';
 
 const COMPONENT_ID = 'editor-plugins/wikipedia-slug-card';
 
@@ -89,21 +90,5 @@ export default class RdfaEditorDbpediaPluginService extends Service {
     };
   }
 
-  /**
-   * Maps location of substring back within reference location
-   *
-   * @method normalizeLocation
-   *
-   * @param {[int,int]} [start, end] Location withing string
-   * @param {[int,int]} [start, end] reference location
-   *
-   * @return {[int,int]} [start, end] absolute location
-   *
-   * @private
-   */
-  normalizeLocation(location, reference) {
-    return [location[0] + reference[0], location[1] + reference[0]];
-  }
 
 };
-
