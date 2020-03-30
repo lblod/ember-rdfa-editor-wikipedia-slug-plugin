@@ -41,20 +41,11 @@ export default class WikipediaSlugCardComponent extends Component {
   @action
   insert() {
     this.args.info.hintsRegistry.removeHintsAtLocation(this.args.info.location, this.args.info.hrId, 'editor-plugins/wikipedia-slug-card');
-    const linkHTML = this.generateLink();
+    const url = `https://en.wikipedia.org/wiki/${encodeURI(this.solution)}`;
+    const label = this.solution;
+    const linkHTML = `<a href="${url}" property="rdf:seeAlso">${label}</a>&nbsp;`;
+
     const selection = this.args.info.editor.selectHighlight(this.args.info.location);
     this.args.info.editor.update(selection, { set: { innerHTML: linkHTML } });
-  }
-
-  /**
-   * Generate the html Element containing the link to the wikipedia article
-   * @method generateLink
-   * @return String
-   * @public
-   */
-  generateLink() {
-    return `
-      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.solution)}' property='rdf:seeAlso'>${this.solution}</a>&nbsp;
-    `;
   }
 }
