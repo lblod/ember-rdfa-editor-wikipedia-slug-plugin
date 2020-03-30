@@ -31,9 +31,26 @@ export default class RdfaEditorDbpediaPluginService extends Service {
       // using the removal here requires us to add hints in a separate loop.
       hintsRegistry.removeHintsInRegion(rdfaBlock.region, hrId, COMPONENT_ID);
 
+
       if (this.patternMatch( rdfaBlock )) {
-        const newHint = this.generateHintCard( rdfaBlock, hrId, hintsRegistry, editor );
-        hints.pushObject( newHint );
+        const match = this.patternMatch( rdfaBlock );
+        const matchedString = match[0];
+        const matchedTerm = matchedString.split(':')[1];
+        const matchIndex = rdfaBlock.text.indexOf(matchedString);
+        const location = normalizeLocation(
+          [ matchIndex, matchIndex + matchedString.length ],
+          rdfaBlock.region );
+
+        hints.pushObject( {
+          info: {
+            label: "Our wikipedia insertion",
+            term: matchedTerm,
+            location,
+            hrId, hintsRegistry, editor
+          },
+          location: location,
+          card: COMPONENT_ID
+        } );
       }
     }
 
@@ -54,37 +71,5 @@ export default class RdfaEditorDbpediaPluginService extends Service {
   patternMatch(rdfaBlock) {
     return rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/g);
   }
-
-  /**
-   * Generates a card given a hint
-   *
-   * @method generateHintCard
-   *
-   * @param {Object} rdfaBlock containing the hinted string and the location of this string
-   * @return {Object} The card to hint for a given template
-   *
-   * @private
-   */
-  generateHintCard(rdfaBlock, hrId, hintsRegistry, editor){
-    const match = this.patternMatch( rdfaBlock );
-    const matchedString = match[0];
-    const matchedTerm = matchedString.split(':')[1];
-    const matchIndex = rdfaBlock.text.indexOf(matchedString);
-    const location = normalizeLocation(
-      [ matchIndex, matchIndex + matchedString.length ],
-      rdfaBlock.region );
-
-    return {
-      info: {
-        label: "Our wikipedia insertion",
-        term: matchedTerm,
-        location,
-        hrId, hintsRegistry, editor
-      },
-      location: location,
-      card: COMPONENT_ID
-    };
-  }
-
 
 };
