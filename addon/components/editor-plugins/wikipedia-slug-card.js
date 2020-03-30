@@ -12,7 +12,7 @@ import dbpediaQuery from '../../util/dbpedia-query';
 */
 export default class WikipediaSlugCardComponent extends Component {
 
-  @tracked options = [];
+  @tracked solution = null;
 
   @tracked loading = false;
 
@@ -28,8 +28,8 @@ export default class WikipediaSlugCardComponent extends Component {
    */
   async getDbpediaOptions() {
     this.loading = true;
-    const options = await dbpediaQuery(this.args.info.term);
-    this.options = options;
+    const solutions = await dbpediaQuery(this.args.info.term);
+    this.solution = solutions.length ? solutions[0] : 0;
     this.loading = false;
   }
 
@@ -54,8 +54,8 @@ export default class WikipediaSlugCardComponent extends Component {
    */
   generateLink() {
     return `
-      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.options[0])}' property='rdf:seeAlso'>
-        ${this.options[0]}
+      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.solution)}' property='rdf:seeAlso'>
+        ${this.solution}
       </a>&nbsp;
     `;
   }

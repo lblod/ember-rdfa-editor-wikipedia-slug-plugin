@@ -5,12 +5,18 @@
     {{#if this.loading}}
       <br><strong>...looking up articles...</strong>
     {{else}}
-      <strong>Do you want to insert a link to {{get options 0}}?</strong>
+      {{#if this.solution}}
+        <strong>Do you want to insert a link to {{this.solution}}?</strong>
+      {{else}}
+        <strong>No article found for {{@info.term}}</strong>
+      {{/if}}
     {{/if}}
   </p>
 </div>
-<div class="modal-dialog__footer">
-  <WuButtonGroup>
-    <WuButton @label="Yes" @size="small" @isNarrow={{true}} @commandLocation="below" @onClick={{this.insert}} />
-  </WuButtonGroup>
-</div>
+{{#if this.solution}}
+  <div class="modal-dialog__footer">
+    <WuButtonGroup>
+      <WuButton @label="Yes" @size="small" @isNarrow={{true}} @commandLocation="below" @onClick={{this.insert}} />
+    </WuButtonGroup>
+  </div>
+{{/if}}
