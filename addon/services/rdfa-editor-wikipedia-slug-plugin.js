@@ -1,6 +1,5 @@
 import Service from '@ember/service';
 
-import { task } from 'ember-concurrency-decorators';
 import normalizeLocation from '../utils/normalize-location';
 
 const COMPONENT_ID = 'editor-plugins/wikipedia-slug-card';
@@ -15,7 +14,7 @@ const COMPONENT_ID = 'editor-plugins/wikipedia-slug-card';
  */
 export default class RdfaEditorDbpediaPluginService extends Service {
   /**
-   * task to handle the incoming events from the editor dispatcher
+   * Handles the incoming events from the editor dispatcher.
    *
    * @method execute
    *
@@ -26,7 +25,6 @@ export default class RdfaEditorDbpediaPluginService extends Service {
    *
    * @public
    */
-  // eslint-disable-next-line require-yield
   execute(hrId, rdfaBlocks, hintsRegistry, editor){
     const hints = [];
     for( const rdfaBlock of rdfaBlocks ) {
