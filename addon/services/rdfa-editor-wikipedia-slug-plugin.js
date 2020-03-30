@@ -32,11 +32,11 @@ export default class RdfaEditorDbpediaPluginService extends Service {
       hintsRegistry.removeHintsInRegion(rdfaBlock.region, hrId, COMPONENT_ID);
 
 
-      const match = rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/g);
+      const match = rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/);
       if (match) {
         const matchedString = match[0];
-        const matchedTerm = matchedString.split(':')[1];
-        const matchIndex = rdfaBlock.text.indexOf(matchedString);
+        const matchedTerm = match[1];
+        const matchIndex = match.index;
         const location = normalizeLocation(
           [ matchIndex, matchIndex + matchedString.length ],
           rdfaBlock.region );
