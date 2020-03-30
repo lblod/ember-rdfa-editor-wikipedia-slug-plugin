@@ -26,9 +26,8 @@ export default class RdfaEditorDbpediaPluginService extends Service {
    *
    * @public
    */
-  @task
   // eslint-disable-next-line require-yield
-  *execute(hrId, rdfaBlocks, hintsRegistry, editor){
+  execute(hrId, rdfaBlocks, hintsRegistry, editor){
     const hints = [];
     for( const rdfaBlock of rdfaBlocks ) {
       // using the removal here requires us to add hints in a separate loop.
