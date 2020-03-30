@@ -54,9 +54,7 @@ export default class WikipediaSlugCardComponent extends Component {
    */
   generateLink() {
     return `
-      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.solution)}' property='rdf:seeAlso'>
-        ${this.solution}
-      </a>&nbsp;
+      <a href='https://en.wikipedia.org/wiki/${encodeURI(this.solution)}' property='rdf:seeAlso'>${this.solution}</a>&nbsp;
     `;
   }
 }
