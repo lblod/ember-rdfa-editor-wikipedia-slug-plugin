@@ -2,7 +2,11 @@
   <p class="u-spacer--tiny">
     Wikipedia link hint
     <br>
-    <strong>Do you want to insert a link to {{get options 0}}?</strong>
+    {{#if this.loading}}
+      <br><strong>...looking up articles...</strong>
+    {{else}}
+      <strong>Do you want to insert a link to {{get options 0}}?</strong>
+    {{/if}}
   </p>
 </div>
 <div class="modal-dialog__footer">

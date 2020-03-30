@@ -14,6 +14,8 @@ export default class WikipediaSlugCardComponent extends Component {
 
   @tracked options = [];
 
+  @tracked loading = false;
+
   constructor() {
     super(...arguments);
     this.getDbpediaOptions();
@@ -25,8 +27,10 @@ export default class WikipediaSlugCardComponent extends Component {
    * @public
    */
   async getDbpediaOptions() {
+    this.loading = true;
     const options = await dbpediaQuery(this.args.info.term);
     this.options = options;
+    this.loading = false;
   }
 
   /**
