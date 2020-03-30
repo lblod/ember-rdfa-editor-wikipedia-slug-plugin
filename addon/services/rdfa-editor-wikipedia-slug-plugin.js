@@ -54,7 +54,7 @@ export default class RdfaEditorDbpediaPluginService extends Service {
    * @private
    */
   matchesPattern(rdfaBlock) {
-    return rdfaBlock.text.match(/dbp:([a-zA-Z]+)/g);
+    return rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/g);
   }
 
   /**
