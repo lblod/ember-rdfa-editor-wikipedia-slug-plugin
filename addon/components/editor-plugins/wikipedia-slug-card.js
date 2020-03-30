@@ -16,7 +16,7 @@ export default class WikipediaSlugCardComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.getDbpediaOptions()
+    this.getDbpediaOptions();
   }
    /**
    * Get all the dbpedia options related to the term of the card,
@@ -25,10 +25,10 @@ export default class WikipediaSlugCardComponent extends Component {
    * @public
    */
   async getDbpediaOptions() {
-    const options = await dbpediaQuery(this.args.info.term)
-    this.options = options
+    const options = await dbpediaQuery(this.args.info.term);
+    this.options = options;
   }
-  
+
   /**
    * Replaces the highlighted word by the html link
    * @method insert
