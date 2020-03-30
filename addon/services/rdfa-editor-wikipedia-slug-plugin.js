@@ -68,7 +68,7 @@ export default class RdfaEditorDbpediaPluginService extends Service {
    * @private
    */
   generateHintCard(rdfaBlock, hrId, hintsRegistry, editor){
-    const term = rdfaBlock.text
+    const term = rdfaBlock.text;
     let match = term.match(/dbp:([a-zA-Z]+)/g);
     const matchedString = match[0];
     const matchedTerm = matchedString.split(':')[1];
