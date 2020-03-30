@@ -8,12 +8,24 @@ import dbpediaQuery from '../../utils/dbpedia-query';
 *
 * @module editor-wikipedia-slug-plugin
 * @class RelatedUrlCard
-* @extends Ember.Component
+* @extends Glimmer.Component
 */
 export default class WikipediaSlugCardComponent extends Component {
 
+  /**
+   * Best solution found by searching dbpedia.
+   *
+   * @property solution
+   * @type {String}
+   */
   @tracked solution = null;
 
+  /**
+   * Toggled to true when we are in a loading state.
+   *
+   * @property loading
+   * @type {boolean}
+   */
   @tracked loading = false;
 
   constructor() {
