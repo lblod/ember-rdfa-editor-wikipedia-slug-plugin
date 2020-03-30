@@ -16,12 +16,12 @@ export default async function editorPluginsDbpediaQuery(term) {
   const params = {
     format: "application/sparql-results+json",
     query
-  }
+  };
   Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
   const response = await fetch(url);
   const json = await response.json();
-  return json.results.bindings.map((option) => option.label.value)
+  return json.results.bindings.map((option) => option.label.value);
 }
 
 function capitalizeFirstLetter(word) {
