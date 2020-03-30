@@ -32,8 +32,8 @@ export default class RdfaEditorDbpediaPluginService extends Service {
       hintsRegistry.removeHintsInRegion(rdfaBlock.region, hrId, COMPONENT_ID);
 
 
-      if (this.patternMatch( rdfaBlock )) {
-        const match = this.patternMatch( rdfaBlock );
+      const match = rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/g);
+      if (match) {
         const matchedString = match[0];
         const matchedTerm = matchedString.split(':')[1];
         const matchIndex = rdfaBlock.text.indexOf(matchedString);
@@ -57,19 +57,4 @@ export default class RdfaEditorDbpediaPluginService extends Service {
     // adding hints must occur in a separate loop from removing hints
     hintsRegistry.addHints(hrId, COMPONENT_ID, hints);
   }
-
-  /**
-   * Given context object, detects if it matches the pattern dbp:*
-   *
-   * @method patternMatch
-   *
-   * @param {Object} rdfaBlock Context instance with an array of embedded contexts.
-   * @return {boolean} Truethy if the text matches the pattern.
-   *
-   * @private
-   */
-  patternMatch(rdfaBlock) {
-    return rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/g);
-  }
-
 };
