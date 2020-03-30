@@ -43,7 +43,6 @@ export default class RdfaEditorDbpediaPluginService extends Service {
 
         hints.pushObject( {
           info: {
-            label: "Our wikipedia insertion",
             term: matchedTerm,
             location,
             hrId, hintsRegistry, editor
