@@ -1,3 +1,5 @@
+import fetch from 'fetch';
+
 export default async function editorPluginsDbpediaQuery(term) {
   const termCapitalized = capitalizeFirstLetter(term);
   const url = new URL("http://dbpedia.org/sparql");
