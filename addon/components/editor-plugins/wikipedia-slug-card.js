@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import dbpediaQuery from '../../util/dbpedia-query';
+import dbpediaQuery from '../../utils/dbpedia-query';
 
 /**
 * Card displaying a hint of the Date plugin
