@@ -35,7 +35,7 @@ export default class RdfaEditorDbpediaPluginService extends Service {
       const match = rdfaBlock.text.match(/dbp:([a-zA-Z_]+)/);
       if (match) {
         const matchedString = match[0];
-        const matchedTerm = match[1];
+        const term = match[1];
         const matchIndex = match.index;
         const location = normalizeLocation(
           [ matchIndex, matchIndex + matchedString.length ],
@@ -43,9 +43,7 @@ export default class RdfaEditorDbpediaPluginService extends Service {
 
         hints.pushObject( {
           info: {
-            term: matchedTerm,
-            location,
-            hrId, hintsRegistry, editor
+            term, location, hrId, hintsRegistry, editor
           },
           location: location,
           card: COMPONENT_ID
